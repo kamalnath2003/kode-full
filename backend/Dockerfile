@@ -9,13 +9,13 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Create and set the working directory
-WORKDIR /app
+WORKDIR /backend
 
 # Copy the package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
