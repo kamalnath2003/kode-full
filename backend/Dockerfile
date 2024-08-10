@@ -1,5 +1,6 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18
+FROM node:19.5.0-alpine
+
 
 # Install OpenJDK 17
 RUN apt-get update && apt-get install -y openjdk-17-jdk
