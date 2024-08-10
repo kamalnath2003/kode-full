@@ -18,7 +18,7 @@ COPY package*.json ./
 
 # Update npm and install dependencies
 RUN npm install -g npm@latest
-RUN npm install --legacy-peer-deps
+# RUN npm install --legacy-peer-deps
 
 # Copy the rest of the application code
 COPY . .
