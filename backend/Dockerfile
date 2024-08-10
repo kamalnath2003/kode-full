@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-USER root 
+
 FROM node:18
 
 
