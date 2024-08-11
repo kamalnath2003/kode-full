@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Components/Navbar';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -14,9 +15,14 @@ function HomePage() {
   };
 
   return (
-    <div className="home-page">
-      <button onClick={createNewSession}>Create New Session</button>
-      <div>
+    <div className="container-fluid">
+      <div className="row">
+            <Navbar/>
+
+      </div>
+      <div className="row"style={{}}>
+        <div className="col">
+        <button onClick={createNewSession}>Create New Session</button>
         <input
           type="text"
           placeholder="Enter session ID"
@@ -25,9 +31,11 @@ function HomePage() {
               joinSession(e.target.value);
             }
           }}
-        />
+          />
+        </div>
       </div>
     </div>
+
   );
 }
 

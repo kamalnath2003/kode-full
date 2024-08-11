@@ -1,6 +1,2 @@
 // Shared Java code goes here
-class Main{
-    public static void main(String args[]){
-        System.out.println("hiii");
-    }
-}
+bbbbbbbbbbbbbbbbbbbgy7gt7gt7
