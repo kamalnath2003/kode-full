@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Editor } from '@monaco-editor/react';
 import io from 'socket.io-client';
+
 import { javaSuggestions } from '../Components/javaSuggestions'; // Import your custom suggestions
 
 function EditorPage() {
@@ -17,9 +18,10 @@ function EditorPage() {
   useEffect(() => {
     const socketInstance = io(
       process.env.NODE_ENV === 'production' 
-        ? 'https://kode-io-1.onrender.com' 
+        ? process.env.REACT_APP_URL
         // ? 'http://localhost:5000' 
-        : 'http://localhost:5000', 
+        //railway backend
+        :process.env.REACT_APP_LOCAL_URL, 
       {
         query: { id },  
         transports: ['websocket'],
