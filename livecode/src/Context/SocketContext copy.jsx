@@ -16,25 +16,51 @@ export function SocketProvider({ children, sessionId }) {
   const [fileName, setFileName] = useState('Main.java');
   const [penEnabled, setPenEnabled] = useState(false);
   const canvasRef = useRef(null);
-  const [socket, setSocket] = useState(null); // <--- Store socket in state
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketInstance = io(process.env.REACT_APP_URL || 'http://localhost:5000', {
+    const socketInstance = io(
+      // process.env.REACT_APP_URL || 
+      'http://localhost:5000', {
       query: { id: sessionId },
       transports: ['websocket'],
     });
+    
+    setSocket(socketInstance);
 
-    setSocket(socketInstance); // <--- Set socket instance in state
+    socketInstance.on('codeUpdate', (newCode) => {
+      // console.log('Code Update Received:', newCode);
+      setCode(newCode);
+    });
+    
+    socketInstance.on('outputUpdate', (data) => {
+      console.log('Output Update Received:', data);
+      setOutput((prev) => prev + data);
+    });//vela seila
+    
+    socketInstance.on('inputUpdate', (newInput) => {
+      console.log('Input Update Received:', newInput);
+      setInput(newInput);
+    });
 
-    socketInstance.on('codeUpdate', (newCode) => setCode(newCode));
-    socketInstance.on('outputUpdate', (data) => setOutput((prev) => prev + data));
-    socketInstance.on('inputUpdate', (newInput) => setInput(newInput));
+    // socketInstance.on('compilationSuccess', () => {
+    //   console.log('Compilation Success Event Received');
+    //   setIsCompiled(true);
+    // });
+
     socketInstance.on('endProcess', () => {
+      console.log('Process Ended');
       setIsRunning(false);
       setIsCompiled(false);
     });
 
-    return () => socketInstance.disconnect();
+    return () => {
+      if (socket) {
+        socket.off('compilationSuccess');
+        socket.off('endProcess');
+        socket.disconnect();
+      }
+    };
   }, [sessionId]);
 
   const handleFileNameChange = (event) => {
@@ -51,7 +77,7 @@ export function SocketProvider({ children, sessionId }) {
 
   const handleCodeChange = debounce((value) => {
     setCode(value);
-    if (socket) { // <--- Ensure socket is available before emitting
+    if (socket) {
       socket.emit('codeChange', value);
     }
   }, 300);
@@ -85,9 +111,28 @@ export function SocketProvider({ children, sessionId }) {
     canvas.isDrawing = true;
   };
 
+  const handleCompileAndRun = () => {
+    setOutput('');
+    setIsRunning(true);
+    setIsCompiled(false);
+    console.log("running")
+    
+    if (socket) {
+      socket.emit('startCode', { code });
+      console.log('Start Code Emitted:', code);
+    }
+  };
+
   const finishDrawing = () => {
     const canvas = canvasRef.current;
     canvas.isDrawing = false;
+  };
+
+  const handleSendInput = () => {
+    if (socket) {
+      socket.emit('sendInput', input);
+      setInput('');
+    }
   };
 
   const draw = (event) => {
@@ -98,6 +143,11 @@ export function SocketProvider({ children, sessionId }) {
     ctx.lineTo(event.nativeEvent.offsetX, event.nativeEvent.offsetY);
     ctx.stroke();
   };
+  useEffect(() => {
+    if (output && isRunning && !isCompiled) {
+      setIsCompiled(true);
+    }
+  }, [output, isRunning, isCompiled]);
 
   return (
     <SocketContext.Provider
@@ -119,9 +169,11 @@ export function SocketProvider({ children, sessionId }) {
         startDrawing,
         finishDrawing,
         draw,
-        socket, // <--- Pass socket to the context
+        socket,
         debounce,
-        handleCodeChange
+        handleCodeChange,
+        handleCompileAndRun,
+        handleSendInput
       }}
     >
       {children}

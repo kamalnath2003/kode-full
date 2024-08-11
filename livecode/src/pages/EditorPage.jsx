@@ -1,37 +1,63 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { SocketProvider, useSocket } from '../Context/SocketContext';
 import { Editor } from '@monaco-editor/react';
-import { useSocket, SocketProvider } from '../Context/SocketContext';
 import Navbar from '../Components/Navbar';
+import { useParams } from 'react-router-dom';
 
 function EditorPageContent() {
-  const {
+  const {     
+    id,
     code,
-    output,
-    input,
-    setInput,
-    isRunning,
-    isCompiled,
-    togglePen,
-    penEnabled,
-    clearDrawing,
     handleCodeChange,
     handleCompileAndRun,
-    handleSendInput,
-    handleAbort,
-    canvasRef,
+    isRunning,
+    setInput,
     fileName,
     handleFileNameChange,
+    input,
+    handleSendInput,
     handleSaveCode,
-    startDrawing,
-    finishDrawing,
-    draw,
+    output,
+    isCompiled,
+    handleAbort
+    
+    
+   
   } = useSocket();
+  // const {
+  //   code,
+  //   output,
+  //   input,
+  //   setInput,
+  //   isRunning,
+  //   isCompiled,
+  //   handleCodeChange,
+  //   handleCompileAndRun,
+  //   handleSendInput,
+  //   handleAbort,
+  //   fileName,
+  //   handleFileNameChange,
+  //   handleSaveCode,
+  // } = useSocket();
+
+  //console.log('EditorPageContent props:', {
+    // code,
+    // output
+    // input,
+    // isRunning,
+    // isCompiled
+//  });  Debugging
 
   return (
-    <div className="container-fluid mx-0 p-0" >
-      <Navbar page = 'editor' fileName={fileName} handleFileNameChange={handleFileNameChange} handleSaveCode={handleSaveCode} />
-      <div className="row " style={{marginRight:"0px"}}>
+    <div className="container-fluid mx-0 p-0">
+      <Navbar
+        page='editor'
+        id={id}
+        fileName={fileName}
+        handleFileNameChange={handleFileNameChange}
+        handleSaveCode={handleSaveCode}
+      />
+      <div className="row" style={{ marginRight: "0px" }}>
         <div className="col">
           <div className="editor-page">
             <Editor
@@ -50,13 +76,12 @@ function EditorPageContent() {
           </div>
         </div>
       </div>
-      <div className="row mr-0"  style={{marginRight:"0px"}}>
+      <div className="row mr-0" style={{ marginRight: "0px" }}>
         <div className="col">
-
-          <button onClick={handleCompileAndRun} disabled={isRunning}>
-            Compile & Run
+          <button className='button-25 ms-3' onClick={handleCompileAndRun} disabled={isRunning}>
+            Run
           </button>
-          <button onClick={handleAbort} disabled={!isRunning}>
+          <button className='button-24' onClick={handleAbort} disabled={!isRunning}>
             Abort
           </button>
           {isRunning && (
@@ -65,7 +90,6 @@ function EditorPageContent() {
                 placeholder="Enter input for your program"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-
                 style={{ marginTop: '10px' }}
               />
               <button onClick={handleSendInput} disabled={!isCompiled}>
@@ -73,38 +97,18 @@ function EditorPageContent() {
               </button>
             </div>
           )}
-
-
-      </div>
-
-          </div>
-
-      {/* <div className="row">
-        <div className="col">
-          <button onClick={togglePen}>
-            {penEnabled ? 'Disable Pen' : 'Enable Pen'}
-          </button>
-          <button onClick={clearDrawing} disabled={!penEnabled}>
-            Clear Drawing
-          </button>
-          <canvas
-            ref={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseUp={finishDrawing}
-            onMouseMove={draw}
-            style={{ border: '1px solid black', marginTop: '10px' }}
-          />
         </div>
-      </div> */}
-      
+      </div>
     </div>
   );
 }
+
 
 function EditorPage() {
   const { id } = useParams();
 
   return (
+    
     <SocketProvider sessionId={id}>
       <EditorPageContent />
     </SocketProvider>
