@@ -105,20 +105,7 @@ function EditorPageContent() {
             Abort
           </button>
          
-          {isRunning && (
-            <div style={{ marginLeft: '20%' }}>
-              <div data-mdb-input-init class="form-outline w-50 d-flex mt-2">
-                <textarea class="form-control" placeholder="Enter input for your program"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)} id="textAreaExample1" rows="4"></textarea>
-               
-              <button   onClick={handleSendInput} disabled={!isCompiled} data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Send input</button>
-              </div>
 
-
-          
-            </div>
-          )}
         </div>
       </div>
     </div>
