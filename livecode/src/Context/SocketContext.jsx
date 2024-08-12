@@ -23,11 +23,12 @@ export function SocketProvider({ children, sessionId }) {
   }, []);
 
   useEffect(() => {
-    const socketInstance = io('http://localhost:5000', {
-      query: { id: sessionId },
-      transports: ['websocket'],
+    const socketInstance = io(process.env.NODE_ENV === 'production' 
+      ? 'https://kode-full-production.up.railway.app' 
+      : 'http://localhost:5000', {
+        query: { id },  
+        transports: ['websocket']
     });
-    
     setSocket(socketInstance);
 
     socketInstance.on('codeUpdate', (newCode) => {
