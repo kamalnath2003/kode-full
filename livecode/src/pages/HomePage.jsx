@@ -57,12 +57,12 @@ function HomePage() {
 
 
 
-              <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5"  onClick={() => {
+              <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5 "  onClick={() => {
               joinSession(valuee)
             }} type="submit">Join Session</button>
 
 
-              <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5 mt-4 mb-0" onClick={createNewSession} type="submit">Create new Session</button>
+              <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5 mx-5 mt-4 " onClick={createNewSession} type="submit">Create new Session</button>
 
            
 
