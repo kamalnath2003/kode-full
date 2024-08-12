@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
+import { debounce } from 'lodash';
 
 const SocketContext = createContext();
 
@@ -13,10 +14,12 @@ export function SocketProvider({ children, sessionId }) {
   const [input, setInput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [isCompiled, setIsCompiled] = useState(false);
-  const [fileName, setFileName] = useState('Main.java');
-  const {id} = useRef();
+  const fileName = useRef('Main.java'); // Using useRef for unchanging variables
 
   const [socket, setSocket] = useState(null);
+  const [terminalInput, setTerminalInput] = useState('');
+
+
 
   const handleOutputUpdate = useCallback((data) => {
     setOutput((prev) => prev + data);
@@ -26,7 +29,7 @@ export function SocketProvider({ children, sessionId }) {
     const socketInstance = io(process.env.NODE_ENV === 'production' 
       ? 'https://kode-full-production.up.railway.app' 
       : 'http://localhost:5000', {
-        query: { id },  
+        query: { id: sessionId },  
         transports: ['websocket']
     });
     setSocket(socketInstance);
@@ -61,6 +64,20 @@ export function SocketProvider({ children, sessionId }) {
     };
   }, [sessionId, handleOutputUpdate]);
 
+  const debouncedHandleCodeChange = useCallback(
+    debounce((value) => {
+      setCode(value);
+      if (socket) {
+        socket.emit('codeChange', value);
+      }
+    }, 300),
+    [socket]
+  );
+
+  const handleCodeChange = (value) => {
+    debouncedHandleCodeChange(value);
+  };
+
   const handleCompileAndRun = () => {
     setOutput('');
     setIsRunning(true);
@@ -72,28 +89,34 @@ export function SocketProvider({ children, sessionId }) {
     }
   };
 
-  const handleCodeChange = (value) => {
-    setCode(value);
-    if (socket) {
-      socket.emit('codeChange', value);
-    }
-  };
-
   const handleSendInput = () => {
     if (socket) {
       socket.emit('sendInput', input);
       setInput('');
     }
   };
+
   const handleSaveCode = () => {
     const blob = new Blob([code], { type: 'text/java' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = fileName;
+    a.download = fileName.current;
     a.click();
     URL.revokeObjectURL(url);
   };
+  const handleTerminalKeyDown = (e) => {
+    if (e.key === 'Enter' && isCompiled) {
+      e.preventDefault();
+      handleSendInput(terminalInput);
+      setTerminalInput('');  // Clear the input field after sending
+    }
+  };
+  const handleTerminalChange = (newValue) => {
+    // Update the terminal input state when user types
+    setTerminalInput(newValue);
+  };
+
   const handleAbort = () => {
     if (isRunning && socket) {
       socket.emit('abort');  // Emit the abort event to the server
@@ -105,19 +128,21 @@ export function SocketProvider({ children, sessionId }) {
     <SocketContext.Provider
       value={{
         code,
-        id,
         setCode,
         output,
         input,
         setInput,
         isRunning,
         isCompiled,
-        fileName,
+        fileName: fileName.current,
         handleCodeChange,
         handleCompileAndRun,
         handleSendInput,
         handleSaveCode,
-        handleAbort,   // Expose handleAbort to the context
+        handleAbort, 
+        handleTerminalKeyDown ,
+        handleTerminalChange,
+        terminalInput // Expose handleAbort to the context
       }}
     >
       {children}

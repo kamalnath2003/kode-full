@@ -23,7 +23,7 @@ const Navbar =(props)=> {
 
       <li className="nav-item">
        
-              <a className="nav-link"   href="https://github.com/kamalnath2003" >          <img style={{width:'40%'}} src="https://img.icons8.com/ios-filled/100/FFFFFF/email.png" alt="email"/></a>
+              <a className="nav-link"   href="mailto:vkamal2003@gmail.com" >          <img style={{width:'40%'}} src="https://img.icons8.com/ios-filled/100/FFFFFF/email.png" alt="email"/></a>
       </li>
       <li className="nav-item">
       <a className="nav-link "   href="https://www.linkedin.com/in/kamalnath-vijayavel-018b00203/" > <img  src="https://img.icons8.com/?size=100&id=8808&format=png&color=FFFFFF" alt="linkedin" style={{width:"40%"}}/></a>

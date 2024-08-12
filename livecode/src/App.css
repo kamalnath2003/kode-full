@@ -2,7 +2,14 @@
 .output-container {
   /* margin-top: 20px; */
   padding: 10px;
-  overflow-y: auto;  
+  /* overflow-y: auto;   */
+  /* max-height:"50vh";       not available in Bootstrap */
+  /* overflow-y: scroll; */
+
+  /* background-color: lightblue; */
+
+  height: 60vh;
+  overflow: auto;
 
   
   background-color: #282c34;

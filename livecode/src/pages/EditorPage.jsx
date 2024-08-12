@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SocketProvider, useSocket } from '../Context/SocketContext';
 import { Editor } from '@monaco-editor/react';
 import Navbar from '../Components/Navbar';
 import { useParams } from 'react-router-dom';
+import '../pages/Editorpage.css';
+import OutputBox from '../Components/OutputBox';
 
 function EditorPageContent() {
+  
+
+
+
   const { id } = useParams();
   const {
 
@@ -61,8 +67,8 @@ function EditorPageContent() {
         handleFileNameChange={handleFileNameChange}
         handleSaveCode={handleSaveCode}
       />
-      <div className="row" style={{ marginRight: "0px" }}>
-        <div className="col">
+      <div className="row d-flex" style={{ marginRight: "0px" }}>
+        <div className="col-6">
           <div className="editor-page">
             <Editor
               height="60vh"
@@ -73,12 +79,22 @@ function EditorPageContent() {
             />
           </div>
         </div>
-        <div className="col boxx output-container" id="outputbox">
-          <div className="output-container">
-            <div className="output-label">Output:</div>
-            <pre>{output}</pre>
-          </div>
+        <div className="col-6">
+        <div className="editor-container">
+          <OutputBox output = {output} isCompiled= {isCompiled} setInput={setInput} input={input} handleSendInput={handleSendInput}/>
+      
+      
+
+    </div>
         </div>
+        {/* <div className="col boxx " id="outputbox">
+          <div className="output-container">
+            
+            <div className="output-label  ">Output:</div>
+            <pre>{output}</pre>
+           
+          </div>
+        </div> */}
       </div>
       <div className="row mr-0" style={{ marginRight: "0px" }}>
         <div className="col">
@@ -88,6 +104,7 @@ function EditorPageContent() {
           <button className='button-24 ms-5 px-5' onClick={handleAbort} disabled={!isRunning}>
             Abort
           </button>
+         
           {isRunning && (
             <div style={{ marginLeft: '20%' }}>
               <div data-mdb-input-init class="form-outline w-50 d-flex mt-2">
