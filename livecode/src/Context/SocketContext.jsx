@@ -14,8 +14,8 @@ export function SocketProvider({ children, sessionId }) {
   const [isRunning, setIsRunning] = useState(false);
   const [isCompiled, setIsCompiled] = useState(false);
   const [fileName, setFileName] = useState('Main.java');
+  const {id} = useRef();
 
-  
   const [socket, setSocket] = useState(null);
 
   const handleOutputUpdate = useCallback((data) => {
@@ -70,16 +70,33 @@ export function SocketProvider({ children, sessionId }) {
       console.log('Start Code Emitted:', code);
     }
   };
+
   const handleCodeChange = (value) => {
     setCode(value);
     if (socket) {
       socket.emit('codeChange', value);
     }
   };
+
   const handleSendInput = () => {
     if (socket) {
       socket.emit('sendInput', input);
       setInput('');
+    }
+  };
+  const handleSaveCode = () => {
+    const blob = new Blob([code], { type: 'text/java' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  const handleAbort = () => {
+    if (isRunning && socket) {
+      socket.emit('abort');  // Emit the abort event to the server
+      setIsRunning(false);   // Update the state to reflect that the process is no longer running
     }
   };
 
@@ -87,6 +104,7 @@ export function SocketProvider({ children, sessionId }) {
     <SocketContext.Provider
       value={{
         code,
+        id,
         setCode,
         output,
         input,
@@ -96,7 +114,9 @@ export function SocketProvider({ children, sessionId }) {
         fileName,
         handleCodeChange,
         handleCompileAndRun,
-        handleSendInput
+        handleSendInput,
+        handleSaveCode,
+        handleAbort,   // Expose handleAbort to the context
       }}
     >
       {children}

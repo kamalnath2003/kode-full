@@ -2,6 +2,7 @@
 .output-container {
   /* margin-top: 20px; */
   padding: 10px;
+  overflow-y: auto;  
 
   
   background-color: #282c34;
@@ -240,4 +241,15 @@ button-75:hover {
 
 .button-25:active {
   opacity: .5;
+}
+
+.gradient-custom1 {
+  /* fallback for old browsers */
+  background: #30cfd0;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to bottom, rgba(48,207,208,0.05), rgba(51,8,103,0.05));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to bottom, rgba(48,207,208,0.05), rgba(51,8,103,0.05))
 }

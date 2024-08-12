@@ -5,8 +5,9 @@ import Navbar from '../Components/Navbar';
 import { useParams } from 'react-router-dom';
 
 function EditorPageContent() {
-  const {     
-    id,
+  const { id } = useParams();
+  const {
+
     code,
     handleCodeChange,
     handleCompileAndRun,
@@ -20,9 +21,9 @@ function EditorPageContent() {
     output,
     isCompiled,
     handleAbort
-    
-    
-   
+
+
+
   } = useSocket();
   // const {
   //   code,
@@ -41,15 +42,18 @@ function EditorPageContent() {
   // } = useSocket();
 
   //console.log('EditorPageContent props:', {
-    // code,
-    // output
-    // input,
-    // isRunning,
-    // isCompiled
-//  });  Debugging
+  // code,
+  // output
+  // input,
+  // isRunning,
+  // isCompiled
+  //  });  Debugging
 
   return (
-    <div className="container-fluid mx-0 p-0">
+    <section className='gradient-custom1 ' style={{paddingBottom:'25%'}}>
+
+   
+    <div className="container-fluid mx-0 p-0 ">
       <Navbar
         page='editor'
         id={id}
@@ -78,28 +82,31 @@ function EditorPageContent() {
       </div>
       <div className="row mr-0" style={{ marginRight: "0px" }}>
         <div className="col">
-          <button className='button-25 ms-3' onClick={handleCompileAndRun} disabled={isRunning}>
+          <button className='button-25 ms-5 px-5 ' onClick={handleCompileAndRun} disabled={isRunning}>
             Run
           </button>
-          <button className='button-24' onClick={handleAbort} disabled={!isRunning}>
+          <button className='button-24 ms-5 px-5' onClick={handleAbort} disabled={!isRunning}>
             Abort
           </button>
           {isRunning && (
-            <div>
-              <textarea
-                placeholder="Enter input for your program"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                style={{ marginTop: '10px' }}
-              />
-              <button onClick={handleSendInput} disabled={!isCompiled}>
-                Send Input
-              </button>
+            <div style={{ marginLeft: '20%' }}>
+              <div data-mdb-input-init class="form-outline w-50 d-flex mt-2">
+                <textarea class="form-control" placeholder="Enter input for your program"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)} id="textAreaExample1" rows="4"></textarea>
+               
+              <button   onClick={handleSendInput} disabled={!isCompiled} data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+              </div>
+
+
+          
             </div>
           )}
         </div>
       </div>
     </div>
+    
+</section>
   );
 }
 
@@ -108,7 +115,7 @@ function EditorPage() {
   const { id } = useParams();
 
   return (
-    
+
     <SocketProvider sessionId={id}>
       <EditorPageContent />
     </SocketProvider>
