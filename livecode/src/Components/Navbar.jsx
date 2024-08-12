@@ -10,8 +10,8 @@ const Navbar =(props)=> {
 
 
   return (<>
-  <nav className=" navbar navbar-expand-lg navbar-light "style={{ backgroundColor: '#41b9a5', height:"60px" }}>
-  <a className="navbar-brand" href="#"><a className="navbar-brand ms-5" href="/"><img src="/kode.svg" style={{width:"40%"}} alt="" /></a></a>
+  <nav className=" navbar navbar-expand-lg shadow"style={{ backgroundColor: '#41b9a5', height:"60px" }}>
+  <a className="navbar-brand" href="#"><a className="navbar-brand ms-5 shadow" href="/"><img src="/kode.svg" style={{width:"40%"}} alt="" /></a></a>
   { props.page=='editor' &&<p class=" rajdhani-bold " >Your session id : {props.id}</p>}
   <button className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
@@ -23,7 +23,7 @@ const Navbar =(props)=> {
 
       <li className="nav-item">
        
-              <a className="nav-link"   href="mailto:vkamal2003@gmail.com" >          <img style={{width:'40%'}} src="https://img.icons8.com/ios-filled/100/FFFFFF/email.png" alt="email"/></a>
+              <a className="nav-link"   href="mailto:vkamal2003@example.com" >          <img style={{width:'40%'}} src="https://img.icons8.com/ios-filled/100/FFFFFF/email.png" alt="email"/></a>
       </li>
       <li className="nav-item">
       <a className="nav-link "   href="https://www.linkedin.com/in/kamalnath-vijayavel-018b00203/" > <img  src="https://img.icons8.com/?size=100&id=8808&format=png&color=FFFFFF" alt="linkedin" style={{width:"40%"}}/></a>

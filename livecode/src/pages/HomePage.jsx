@@ -30,11 +30,11 @@ function HomePage() {
     <div className="row d-flex justify-content-center align-items-center h-100">
       <div className="col-12 col-md-8 col-lg-6 col-xl-5">
         <div className="card bg-dark text-white" style={{ borderRadius: '1rem' }}>
-          <div className="card-body p-5 text-center">
+          <div className="card-body p-4 text-center">
 
             <div className="mb-md-2 mt-md-2 pb-0">
 
-              <h2 className="fw-bold mb-2 text-uppercase">WELCOME TO KODE COMMUNITY</h2>
+              <h2 className="fw-bold mb-2 shadow-lg text-uppercase"><img src="./kode.svg" alt="" srcset="" /></h2>
               <p className="text-white-50 mb-3">Create or join session !</p>
 
               <div data-mdb-input-init className="form-outline form-white mb-3">
