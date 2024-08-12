@@ -34,8 +34,8 @@ function HomePage() {
 
             <div className="mb-md-5 mt-md-4 pb-5">
 
-              <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
-              <p className="text-white-50 mb-5">Please enter your login and password!</p>
+              <h2 className="fw-bold mb-2 text-uppercase">WELCOME TO KODE COMMUNITY</h2>
+              <p className="text-white-50 mb-5">Create or join session !</p>
 
               <div data-mdb-input-init className="form-outline form-white mb-4">
                 <input  className="form-control form-control-lg" 
