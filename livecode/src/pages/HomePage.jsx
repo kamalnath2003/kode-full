@@ -32,12 +32,12 @@ function HomePage() {
         <div className="card bg-dark text-white" style={{ borderRadius: '1rem' }}>
           <div className="card-body p-5 text-center">
 
-            <div className="mb-md-5 mt-md-4 pb-5">
+            <div className="mb-md-2 mt-md-2 pb-0">
 
               <h2 className="fw-bold mb-2 text-uppercase">WELCOME TO KODE COMMUNITY</h2>
-              <p className="text-white-50 mb-5">Create or join session !</p>
+              <p className="text-white-50 mb-3">Create or join session !</p>
 
-              <div data-mdb-input-init className="form-outline form-white mb-4">
+              <div data-mdb-input-init className="form-outline form-white mb-3">
                 <input  className="form-control form-control-lg" 
                 type="text"
                 placeholder="Enter session ID"
@@ -62,7 +62,7 @@ function HomePage() {
             }} type="submit">Join Session</button>
 
 
-              <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5 mt-4" onClick={createNewSession} type="submit">Create new Session</button>
+              <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5 mt-4 mb-0" onClick={createNewSession} type="submit">Create new Session</button>
 
            
 
