@@ -15,11 +15,8 @@ export function SocketProvider({ children, sessionId }) {
   const [isRunning, setIsRunning] = useState(false);
   const [isCompiled, setIsCompiled] = useState(false);
   const fileName = useRef('Main.java'); // Using useRef for unchanging variables
-
   const [socket, setSocket] = useState(null);
   const [terminalInput, setTerminalInput] = useState('');
-
-
 
   const handleOutputUpdate = useCallback((data) => {
     setOutput((prev) => prev + data);
@@ -29,12 +26,13 @@ export function SocketProvider({ children, sessionId }) {
     const socketInstance = io(process.env.NODE_ENV === 'production' 
       ? 'https://kode-full-production.up.railway.app' 
       : 'http://localhost:5000', {
-        query: { id: sessionId },  
+        query: { id: sessionId },
         transports: ['websocket']
     });
     setSocket(socketInstance);
 
     socketInstance.on('codeUpdate', (newCode) => {
+      console.log('Code Update Received:', newCode);
       setCode(newCode);
     });
     
@@ -104,17 +102,27 @@ export function SocketProvider({ children, sessionId }) {
     a.download = fileName.current;
     a.click();
     URL.revokeObjectURL(url);
+
   };
+
   const handleTerminalKeyDown = (e) => {
     if (e.key === 'Enter' && isCompiled) {
       e.preventDefault();
-      handleSendInput(terminalInput);
-      setTerminalInput('');  // Clear the input field after sending
+      handleSendInput();
+      setInput('');
+      // setTerminalInput('');  // Clear the input field after sending
     }
   };
-  const handleTerminalChange = (newValue) => {
+
+  // const handleTerminalChange = (newValue) => {
+  //   // Update the terminal input state when user types
+  //   (newValue);
+  // };
+  
+  
+  const handleClearOutput = () => {
     // Update the terminal input state when user types
-    setTerminalInput(newValue);
+    setOutput('');
   };
 
   const handleAbort = () => {
@@ -128,21 +136,22 @@ export function SocketProvider({ children, sessionId }) {
     <SocketContext.Provider
       value={{
         code,
-        setCode,
-        output,
         input,
-        setInput,
+        output,
         isRunning,
         isCompiled,
         fileName: fileName.current,
+        terminalInput,
+        setInput,
+        setCode,
         handleCodeChange,
         handleCompileAndRun,
         handleSendInput,
         handleSaveCode,
-        handleAbort, 
-        handleTerminalKeyDown ,
-        handleTerminalChange,
-        terminalInput // Expose handleAbort to the context
+        handleAbort,
+        handleTerminalKeyDown,
+        // handleTerminalChange,
+        handleClearOutput
       }}
     >
       {children}
